@@ -6,28 +6,24 @@ const downloadPdfBtn = document.getElementById("download-pdf");
 const shareStoryBtn = document.getElementById("share-story");
 
 let currentPage = 0;
-let storyData = [];
-const language = localStorage.getItem("selectedLanguage") || "fa";
+const pages = [];
+for (let i = 1; i <= 118; i++) {
+    pages.push({ text: "", image: `assets/images/page (${i}).jpg` });
+}
+let storyData = pages;
 
-// بارگذاری داستان
-fetch(`assets/data/story_${language}.json`)
-    .then((response) => response.json())
-    .then((data) => {
-        storyData = data;
-        renderPage();
-    });
-
+// رندر صفحه
 function renderPage() {
-    const { text, image } = storyData[currentPage];
+    const { text = "متن موجود نیست", image = "" } = storyData[currentPage] || {};
     storyContainer.innerHTML = `
         <h2 class="mb-4">${text}</h2>
-        <img src="${image}" alt="Story Image" class="img-fluid">
+        <img src="${image}" alt="Story Image" class="img-fluid" onerror="this.style.display='none'">
     `;
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === storyData.length - 1;
 }
 
-// دکمه‌های کنترل صفحات
+// کنترل صفحات
 prevBtn.addEventListener("click", () => {
     if (currentPage > 0) currentPage--;
     renderPage();
@@ -41,17 +37,26 @@ nextBtn.addEventListener("click", () => {
 downloadPdfBtn.addEventListener("click", () => {
     const doc = new jsPDF();
     storyData.forEach(({ text }, index) => {
-        doc.text(`${index + 1}. ${text}`, 10, 10 + index * 30);
+        const y = 10 + (index % 25) * 10;
+        if (index > 0 && index % 25 === 0) doc.addPage();
+        doc.text(`${index + 1}. ${text}`, 10, y);
     });
     doc.save("story.pdf");
 });
 
 // اشتراک‌گذاری استوری
 shareStoryBtn.addEventListener("click", () => {
-    html2canvas(storyContainer).then((canvas) => {
-        const link = document.createElement("a");
-        link.download = `story-page-${currentPage + 1}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    });
+    html2canvas(storyContainer)
+        .then((canvas) => {
+            const link = document.createElement("a");
+            link.download = `story-page-${currentPage + 1}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        })
+        .catch((error) => {
+            alert("خطا در اشتراک‌گذاری: " + error.message);
+        });
 });
+
+// شروع رندر
+renderPage();
