@@ -65,25 +65,33 @@ nextBtn.addEventListener("click", () => {
 
 // اشتراک‌گذاری استوری
 shareStoryBtn.addEventListener("click", () => {
-    html2canvas(storyContainer)
-        .then((canvas) => {
-            const ctx = canvas.getContext("2d");
-            const text = "This project is made by Rick Sanchez";
-            ctx.font = "10px Arial";
-            ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // رنگ خاکستری
-            ctx.textAlign = "center";
-            ctx.fillText(
-                text,
-                canvas.width / 2,
-                canvas.height - 10 // پایین‌ترین بخش تصویر
-            );
+    html2canvas(storyContainer, { 
+        width: 1080, // عرض استوری (برای اینستاگرام یا سایر شبکه‌ها)
+        height: 1920, // ارتفاع استوری
+        x: 0, // موقعیت شروع در محور X
+        y: 0 // موقعیت شروع در محور Y
+    })
+    .then((canvas) => {
+        const ctx = canvas.getContext("2d");
 
-            const link = document.createElement("a");
-            link.download = `story-page-${currentPage + 1}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        })
-        .catch((error) => {
-            alert("خطا در اشتراک‌گذاری: " + error.message);
-        });
+        // متن واترمارک
+        const watermarkText = "This project is made by Rick Sanchez";
+        ctx.font = "24px Arial";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // رنگ خاکستری با شفافیت
+        ctx.textAlign = "center";
+
+        // متن واترمارک در پایین وسط
+        const textX = canvas.width / 2;
+        const textY = canvas.height - 40; // 40 پیکسل از پایین
+        ctx.fillText(watermarkText, textX, textY);
+
+        // دانلود تصویر
+        const link = document.createElement("a");
+        link.download = `story-page-${currentPage + 1}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    })
+    .catch((error) => {
+        alert("خطا در اشتراک‌گذاری: " + error.message);
+    });
 });
