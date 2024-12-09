@@ -1,0 +1,16 @@
+body {
+    font-family: "Vazir", sans-serif;
+    direction: rtl;
+    background-color: #f8f9fa;
+}
+h2 {
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
