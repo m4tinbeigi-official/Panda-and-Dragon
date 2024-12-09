@@ -18,10 +18,19 @@ let storyData = pages;
 
 // شروع رندر بعد از بارگذاری صفحه
 window.onload = () => {
-    const pageId = window.location.pathname.split('/').pop();  // گرفتن شماره صفحه از URL
-    currentPage = pageId ? parseInt(pageId) - 1 : 0;  // تنظیم شماره صفحه بر اساس URL
+    const pageId = getPageIdFromURL();  // گرفتن شماره صفحه از URL
+    if (pageId !== null) {
+        currentPage = pageId - 1;  // تنظیم شماره صفحه بر اساس URL
+    }
     renderPage();
 };
+
+// تابع برای گرفتن شماره صفحه از URL
+function getPageIdFromURL() {
+    const pageUrl = window.location.pathname;
+    const pageMatch = pageUrl.match(/page-(\d+)\.html$/);
+    return pageMatch ? parseInt(pageMatch[1], 10) : null;
+}
 
 // رندر صفحه
 function renderPage() {
