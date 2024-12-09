@@ -7,22 +7,40 @@ const shareStoryBtn = document.getElementById("share-story");
 let currentPage = 0;
 const pages = [];
 for (let i = 1; i <= 118; i++) {
-    pages.push({ text: `صفحه ${i}`, image: `assets/images/page (${i}).jpg` });
+    pages.push({ 
+        text: `صفحه ${i}`, 
+        image: `assets/images/page (${i}).jpg`,
+        seoDescription: `توضیحات سئو برای صفحه ${i}`,
+        seoTitle: `عنوان سئو برای صفحه ${i}`,
+    });
 }
 let storyData = pages;
 
 // شروع رندر بعد از بارگذاری صفحه
 window.onload = () => {
+    const pageId = window.location.pathname.split('/').pop();  // گرفتن شماره صفحه از URL
+    currentPage = pageId ? parseInt(pageId) - 1 : 0;  // تنظیم شماره صفحه بر اساس URL
     renderPage();
 };
 
 // رندر صفحه
 function renderPage() {
-    const { text = "متن موجود نیست", image = "" } = storyData[currentPage] || {};
+    const { text = "متن موجود نیست", image = "", seoTitle = "", seoDescription = "" } = storyData[currentPage] || {};
+    
+    // تنظیم سئو برای صفحه
+    document.title = seoTitle;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", seoDescription);
+
+    // رندر محتوای صفحه
     storyContainer.innerHTML = `
         <h2>${text}</h2>
         <img src="${image}" alt="Story Image" onload="adjustImage(this)" onerror="this.style.display='none'">
     `;
+    
+    // تغییر URL برای صفحات جداگانه
+    const pageUrl = `page-${currentPage + 1}.html`;
+    window.history.pushState(null, seoTitle, pageUrl);
+
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === storyData.length - 1;
 }
@@ -68,30 +86,4 @@ shareStoryBtn.addEventListener("click", () => {
         .catch((error) => {
             alert("خطا در اشتراک‌گذاری: " + error.message);
         });
-});
-
-// نمایش گزینه "افزودن به صفحه اصلی"
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-
-    // نمایش دکمه برای افزودن به صفحه اصلی
-    const addToHomeScreenBtn = document.createElement('button');
-    addToHomeScreenBtn.textContent = 'افزودن به صفحه اصلی';
-    document.body.appendChild(addToHomeScreenBtn);
-
-    addToHomeScreenBtn.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('کاربر اپلیکیشن را به صفحه اصلی اضافه کرد');
-            } else {
-                console.log('کاربر اپلیکیشن را به صفحه اصلی اضافه نکرد');
-            }
-            deferredPrompt = null;
-            addToHomeScreenBtn.remove();
-        });
-    });
 });
