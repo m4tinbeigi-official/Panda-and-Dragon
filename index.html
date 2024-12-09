@@ -3,17 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داستان تعاملی</title>
+    <title>پاندای بزرگ و اژدهای کوچک</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(to bottom, #fefae0, #d8f3dc);
+            color: #333;
+            overflow-x: hidden;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #283618;
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        .btn-primary {
+            background-color: #606c38;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #283618;
+        }
+        .quote {
+            font-style: italic;
+            color: #555;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .panda-img {
+            width: 100px;
+            height: auto;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
     <div class="container text-center mt-5">
-        <h1 class="mb-4">داستان تعاملی</h1>
+        <img src="assets/images/panda_dragon.png" alt="پاندای بزرگ و اژدهای کوچک" class="panda-img">
+        <h1 class="mb-4">پاندای بزرگ و اژدهای کوچک</h1>
+        <p class="mb-4">به سفری الهام‌بخش با پاندای بزرگ و اژدهای کوچک خوش آمدید. داستانی که در آن دوستی، آرامش و طبیعت معنای تازه‌ای پیدا می‌کنند.</p>
+        <blockquote class="quote mb-4">"بعضی اوقات همه آنچه که نیاز داری، نفس عمیق کشیدن است."</blockquote>
         <p>زبان خود را انتخاب کنید:</p>
         <select id="language-selector" class="form-select w-50 mx-auto mb-4">
             <option value="fa">فارسی</option>
-            <option value="en">English</option>
+            <option value="en" disabled>English</option>
         </select>
         <button id="start-btn" class="btn btn-primary">شروع داستان</button>
     </div>
