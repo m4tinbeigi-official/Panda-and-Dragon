@@ -41,7 +41,7 @@ downloadPdfBtn.addEventListener("click", () => {
         if (index > 0 && index % 25 === 0) doc.addPage();
         doc.text(`${index + 1}. ${text}`, 10, y);
     });
-    doc.save("story.pdf");
+    doc.save("Panda-and-Dragon-RickSanchez(@M4tinBeigi).pdf");
 });
 
 // اشتراک‌گذاری استوری
