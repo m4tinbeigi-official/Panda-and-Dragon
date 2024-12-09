@@ -12,6 +12,11 @@ for (let i = 1; i <= 118; i++) {
 }
 let storyData = pages;
 
+// شروع رندر بعد از بارگذاری صفحه
+window.onload = () => {
+    renderPage();
+};
+
 // رندر صفحه
 function renderPage() {
     const { text = "متن موجود نیست", image = "" } = storyData[currentPage] || {};
@@ -76,7 +81,3 @@ shareStoryBtn.addEventListener("click", () => {
             alert("خطا در اشتراک‌گذاری: " + error.message);
         });
 });
-
-
-// شروع رندر
-renderPage();
