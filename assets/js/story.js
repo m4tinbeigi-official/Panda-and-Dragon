@@ -2,7 +2,6 @@ const { jsPDF } = window.jspdf;
 const storyContainer = document.getElementById("story-container");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
-const downloadPdfBtn = document.getElementById("download-pdf");
 const shareStoryBtn = document.getElementById("share-story");
 
 let currentPage = 0;
@@ -46,17 +45,6 @@ nextBtn.addEventListener("click", () => {
     renderPage();
 });
 
-// دانلود PDF
-downloadPdfBtn.addEventListener("click", () => {
-    const doc = new jsPDF();
-    storyData.forEach(({ text }, index) => {
-        const y = 10 + (index % 25) * 10;
-        if (index > 0 && index % 25 === 0) doc.addPage();
-        doc.text(`${index + 1}. ${text}`, 10, y);
-    });
-    doc.save("Panda-and-Dragon.pdf");
-});
-
 // اشتراک‌گذاری استوری
 shareStoryBtn.addEventListener("click", () => {
     html2canvas(storyContainer)
@@ -80,4 +68,30 @@ shareStoryBtn.addEventListener("click", () => {
         .catch((error) => {
             alert("خطا در اشتراک‌گذاری: " + error.message);
         });
+});
+
+// نمایش گزینه "افزودن به صفحه اصلی"
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+
+    // نمایش دکمه برای افزودن به صفحه اصلی
+    const addToHomeScreenBtn = document.createElement('button');
+    addToHomeScreenBtn.textContent = 'افزودن به صفحه اصلی';
+    document.body.appendChild(addToHomeScreenBtn);
+
+    addToHomeScreenBtn.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('کاربر اپلیکیشن را به صفحه اصلی اضافه کرد');
+            } else {
+                console.log('کاربر اپلیکیشن را به صفحه اصلی اضافه نکرد');
+            }
+            deferredPrompt = null;
+            addToHomeScreenBtn.remove();
+        });
+    });
 });
