@@ -56,6 +56,17 @@ downloadPdfBtn.addEventListener("click", () => {
 shareStoryBtn.addEventListener("click", () => {
     html2canvas(storyContainer)
         .then((canvas) => {
+            const ctx = canvas.getContext("2d");
+            const text = "This project is made by Rick Sanchez";
+            ctx.font = "10px Arial";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.5)"; // رنگ خاکستری
+            ctx.textAlign = "center";
+            ctx.fillText(
+                text,
+                canvas.width / 2,
+                canvas.height - 10 // پایین‌ترین بخش تصویر
+            );
+
             const link = document.createElement("a");
             link.download = `story-page-${currentPage + 1}.png`;
             link.href = canvas.toDataURL("image/png");
@@ -65,6 +76,7 @@ shareStoryBtn.addEventListener("click", () => {
             alert("خطا در اشتراک‌گذاری: " + error.message);
         });
 });
+
 
 // شروع رندر
 renderPage();
