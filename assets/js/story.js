@@ -8,7 +8,7 @@ const shareStoryBtn = document.getElementById("share-story");
 let currentPage = 0;
 const pages = [];
 for (let i = 1; i <= 118; i++) {
-    pages.push({ text: "", image: `assets/images/page (${i}).jpg` });
+    pages.push({ text: `صفحه ${i}`, image: `assets/images/page (${i}).jpg` });
 }
 let storyData = pages;
 
@@ -16,11 +16,19 @@ let storyData = pages;
 function renderPage() {
     const { text = "متن موجود نیست", image = "" } = storyData[currentPage] || {};
     storyContainer.innerHTML = `
-        <h2 class="mb-4">${text}</h2>
-        <img src="${image}" alt="Story Image" class="img-fluid" onerror="this.style.display='none'">
+        <h2>${text}</h2>
+        <img src="${image}" alt="Story Image" onload="adjustImage(this)" onerror="this.style.display='none'">
     `;
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === storyData.length - 1;
+}
+
+// تنظیم اندازه تصویر
+function adjustImage(img) {
+    const maxHeight = window.innerHeight * 0.6; // حداکثر ارتفاع 60 درصد صفحه
+    const maxWidth = window.innerWidth * 0.9;  // حداکثر عرض 90 درصد صفحه
+    img.style.maxHeight = `${maxHeight}px`;
+    img.style.maxWidth = `${maxWidth}px`;
 }
 
 // کنترل صفحات
@@ -41,7 +49,7 @@ downloadPdfBtn.addEventListener("click", () => {
         if (index > 0 && index % 25 === 0) doc.addPage();
         doc.text(`${index + 1}. ${text}`, 10, y);
     });
-    doc.save("Panda-and-Dragon-RickSanchez(@M4tinBeigi).pdf");
+    doc.save("Panda-and-Dragon.pdf");
 });
 
 // اشتراک‌گذاری استوری
