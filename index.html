@@ -43,7 +43,8 @@
     </style>
 </head>
 <body>
-    <div class="container text-center mt-5">
+    <div id="content" class="container text-center mt-5">
+        <!-- محتوای اولیه بارگذاری می‌شود -->
         <img src="assets/images/panda_dragon.png" alt="پاندای بزرگ و اژدهای کوچک" class="panda-img">
         <h1 class="mb-4">پاندای بزرگ و اژدهای کوچک</h1>
         <p class="mb-4">به سفری الهام‌بخش با پاندای بزرگ و اژدهای کوچک خوش آمدید. داستانی که در آن دوستی، آرامش و طبیعت معنای تازه‌ای پیدا می‌کنند.</p>
@@ -98,20 +99,18 @@
             document.querySelector('meta[name="description"]')?.setAttribute("content", seoDescription);
 
             // رندر محتوای صفحه
-            document.body.innerHTML = `
-                <div class="container text-center mt-5">
-                    <img src="assets/images/panda_dragon.png" alt="پاندای بزرگ و اژدهای کوچک" class="panda-img">
-                    <h1 class="mb-4">پاندای بزرگ و اژدهای کوچک</h1>
-                    <h2>${text}</h2>
-                    <img src="${image}" alt="Story Image" class="img-fluid mb-4">
-                    <p>متن صفحه ${currentPage + 1}</p>
-                    <button onclick="changePage(${currentPage})" class="btn btn-primary">شروع داستان</button>
-                </div>
+            const contentContainer = document.getElementById("content");
+            contentContainer.innerHTML = `
+                <img src="assets/images/panda_dragon.png" alt="پاندای بزرگ و اژدهای کوچک" class="panda-img">
+                <h1 class="mb-4">پاندای بزرگ و اژدهای کوچک</h1>
+                <h2>${text}</h2>
+                <img src="${image}" alt="Story Image" class="img-fluid mb-4">
+                <p>متن صفحه ${currentPage + 1}</p>
+                <button onclick="changePage(${currentPage + 1})" class="btn btn-primary">صفحه بعد</button>
             `;
 
             const pageUrl = `page-${currentPage + 1}.html`;
             window.history.pushState(null, seoTitle, pageUrl);
-
         }
 
         function changePage(pageNumber) {
