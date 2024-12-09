@@ -1,5 +1,4 @@
-import { jsPDF } from "jspdf";
-
+const { jsPDF } = window.jspdf;
 const storyContainer = document.getElementById("story-container");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
